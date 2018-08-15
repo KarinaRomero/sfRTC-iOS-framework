@@ -15,5 +15,6 @@ FOUNDATION_EXPORT double sfRTC_iOS_frameworkVersionNumber;
 FOUNDATION_EXPORT const unsigned char sfRTC_iOS_frameworkVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <sfRTC_iOS_framework/PublicHeader.h>
-
+#import <sfRTC_iOS_framework/PeerConnectionClient.h>
+#import <sfRTC_iOS_framework/MessagesHandlerToSignaling.h>
 

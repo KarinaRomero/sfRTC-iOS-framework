@@ -10,6 +10,13 @@
 		C40E4C03211CE7A7006511E8 /* sfRTC_iOS_framework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C40E4BF9211CE7A7006511E8 /* sfRTC_iOS_framework.framework */; };
 		C40E4C08211CE7A7006511E8 /* sfRTC_iOS_frameworkTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C40E4C07211CE7A7006511E8 /* sfRTC_iOS_frameworkTests.m */; };
 		C40E4C0A211CE7A7006511E8 /* sfRTC_iOS_framework.h in Headers */ = {isa = PBXBuildFile; fileRef = C40E4BFC211CE7A7006511E8 /* sfRTC_iOS_framework.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C4877B25212498B7001C1796 /* dependences in Resources */ = {isa = PBXBuildFile; fileRef = C4877B24212498B7001C1796 /* dependences */; };
+		C4877B2D21249B27001C1796 /* SocketRocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4877B2B21249B27001C1796 /* SocketRocket.framework */; };
+		C4877B2E21249B27001C1796 /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4877B2C21249B27001C1796 /* WebRTC.framework */; };
+		C4877B3321249BD0001C1796 /* MessagesHandlerToSignaling.h in Headers */ = {isa = PBXBuildFile; fileRef = C4877B2F21249BD0001C1796 /* MessagesHandlerToSignaling.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C4877B3421249BD0001C1796 /* PeerConnectionClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C4877B3021249BD0001C1796 /* PeerConnectionClient.m */; };
+		C4877B3521249BD0001C1796 /* MessagesHandlerToSignaling.m in Sources */ = {isa = PBXBuildFile; fileRef = C4877B3121249BD0001C1796 /* MessagesHandlerToSignaling.m */; };
+		C4877B3621249BD0001C1796 /* PeerConnectionClient.h in Headers */ = {isa = PBXBuildFile; fileRef = C4877B3221249BD0001C1796 /* PeerConnectionClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +36,13 @@
 		C40E4C02211CE7A7006511E8 /* sfRTC-iOS-frameworkTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "sfRTC-iOS-frameworkTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C40E4C07211CE7A7006511E8 /* sfRTC_iOS_frameworkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = sfRTC_iOS_frameworkTests.m; sourceTree = "<group>"; };
 		C40E4C09211CE7A7006511E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C4877B24212498B7001C1796 /* dependences */ = {isa = PBXFileReference; lastKnownFileType = folder; path = dependences; sourceTree = "<group>"; };
+		C4877B2B21249B27001C1796 /* SocketRocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SocketRocket.framework; path = dependences/SocketRocket.framework; sourceTree = "<group>"; };
+		C4877B2C21249B27001C1796 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = dependences/WebRTC.framework; sourceTree = "<group>"; };
+		C4877B2F21249BD0001C1796 /* MessagesHandlerToSignaling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesHandlerToSignaling.h; sourceTree = "<group>"; };
+		C4877B3021249BD0001C1796 /* PeerConnectionClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeerConnectionClient.m; sourceTree = "<group>"; };
+		C4877B3121249BD0001C1796 /* MessagesHandlerToSignaling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesHandlerToSignaling.m; sourceTree = "<group>"; };
+		C4877B3221249BD0001C1796 /* PeerConnectionClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerConnectionClient.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +50,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4877B2D21249B27001C1796 /* SocketRocket.framework in Frameworks */,
+				C4877B2E21249B27001C1796 /* WebRTC.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -53,9 +69,11 @@
 		C40E4BEF211CE7A7006511E8 = {
 			isa = PBXGroup;
 			children = (
+				C4877B24212498B7001C1796 /* dependences */,
 				C40E4BFB211CE7A7006511E8 /* sfRTC-iOS-framework */,
 				C40E4C06211CE7A7006511E8 /* sfRTC-iOS-frameworkTests */,
 				C40E4BFA211CE7A7006511E8 /* Products */,
+				C4877B2A21249B27001C1796 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,6 +89,10 @@
 		C40E4BFB211CE7A7006511E8 /* sfRTC-iOS-framework */ = {
 			isa = PBXGroup;
 			children = (
+				C4877B2F21249BD0001C1796 /* MessagesHandlerToSignaling.h */,
+				C4877B3121249BD0001C1796 /* MessagesHandlerToSignaling.m */,
+				C4877B3221249BD0001C1796 /* PeerConnectionClient.h */,
+				C4877B3021249BD0001C1796 /* PeerConnectionClient.m */,
 				C40E4BFC211CE7A7006511E8 /* sfRTC_iOS_framework.h */,
 				C40E4BFD211CE7A7006511E8 /* Info.plist */,
 			);
@@ -86,6 +108,15 @@
 			path = "sfRTC-iOS-frameworkTests";
 			sourceTree = "<group>";
 		};
+		C4877B2A21249B27001C1796 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C4877B2B21249B27001C1796 /* SocketRocket.framework */,
+				C4877B2C21249B27001C1796 /* WebRTC.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -93,7 +124,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4877B3621249BD0001C1796 /* PeerConnectionClient.h in Headers */,
 				C40E4C0A211CE7A7006511E8 /* sfRTC_iOS_framework.h in Headers */,
+				C4877B3321249BD0001C1796 /* MessagesHandlerToSignaling.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -176,6 +209,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4877B25212498B7001C1796 /* dependences in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,6 +227,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4877B3521249BD0001C1796 /* MessagesHandlerToSignaling.m in Sources */,
+				C4877B3421249BD0001C1796 /* PeerConnectionClient.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -341,8 +377,15 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/dependences",
+				);
 				INFOPLIST_FILE = "sfRTC-iOS-framework/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -365,8 +408,15 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_BITCODE = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/dependences",
+				);
 				INFOPLIST_FILE = "sfRTC-iOS-framework/Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
