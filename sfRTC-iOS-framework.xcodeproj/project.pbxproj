@@ -12,7 +12,7 @@
 		C40E4C0A211CE7A7006511E8 /* sfRTC_iOS_framework.h in Headers */ = {isa = PBXBuildFile; fileRef = C40E4BFC211CE7A7006511E8 /* sfRTC_iOS_framework.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C4246857212501AD00A3254F /* WebRTC.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C42468532125018E00A3254F /* WebRTC.framework */; };
 		C46FE97721260F0A00E8ED14 /* SocketRocket.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C46FE97621260F0A00E8ED14 /* SocketRocket.framework */; };
-		C4877B3321249BD0001C1796 /* MessagesHandlerToSignaling.h in Headers */ = {isa = PBXBuildFile; fileRef = C4877B2F21249BD0001C1796 /* MessagesHandlerToSignaling.h */; };
+		C4877B3321249BD0001C1796 /* MessagesHandlerToSignaling.h in Headers */ = {isa = PBXBuildFile; fileRef = C4877B2F21249BD0001C1796 /* MessagesHandlerToSignaling.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		C4877B3421249BD0001C1796 /* PeerConnectionClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C4877B3021249BD0001C1796 /* PeerConnectionClient.m */; };
 		C4877B3521249BD0001C1796 /* MessagesHandlerToSignaling.m in Sources */ = {isa = PBXBuildFile; fileRef = C4877B3121249BD0001C1796 /* MessagesHandlerToSignaling.m */; };
 		C4877B3621249BD0001C1796 /* PeerConnectionClient.h in Headers */ = {isa = PBXBuildFile; fileRef = C4877B3221249BD0001C1796 /* PeerConnectionClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
