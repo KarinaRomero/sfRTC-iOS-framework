@@ -16,6 +16,8 @@
 		C4877B3421249BD0001C1796 /* PeerConnectionClient.m in Sources */ = {isa = PBXBuildFile; fileRef = C4877B3021249BD0001C1796 /* PeerConnectionClient.m */; };
 		C4877B3521249BD0001C1796 /* MessagesHandlerToSignaling.m in Sources */ = {isa = PBXBuildFile; fileRef = C4877B3121249BD0001C1796 /* MessagesHandlerToSignaling.m */; };
 		C4877B3621249BD0001C1796 /* PeerConnectionClient.h in Headers */ = {isa = PBXBuildFile; fileRef = C4877B3221249BD0001C1796 /* PeerConnectionClient.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		C4B3FA082129E87E003630E1 /* LICENCE.txt in Resources */ = {isa = PBXBuildFile; fileRef = C4B3FA072129E87E003630E1 /* LICENCE.txt */; };
+		C4B3FA0A2129E887003630E1 /* LICENCE.txt in Resources */ = {isa = PBXBuildFile; fileRef = C4B3FA092129E887003630E1 /* LICENCE.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,13 +38,14 @@
 		C40E4C07211CE7A7006511E8 /* sfRTC_iOS_frameworkTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = sfRTC_iOS_frameworkTests.m; sourceTree = "<group>"; };
 		C40E4C09211CE7A7006511E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C42468532125018E00A3254F /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = WebRTC.framework; sourceTree = "<group>"; };
-		C46FE9742126098400E8ED14 /* libSocketRocket.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSocketRocket.a; path = dependences/libSocketRocket.a; sourceTree = "<group>"; };
 		C46FE97621260F0A00E8ED14 /* SocketRocket.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SocketRocket.framework; sourceTree = "<group>"; };
 		C4877B2C21249B27001C1796 /* WebRTC.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebRTC.framework; path = dependences/WebRTC.framework; sourceTree = "<group>"; };
 		C4877B2F21249BD0001C1796 /* MessagesHandlerToSignaling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesHandlerToSignaling.h; sourceTree = "<group>"; };
 		C4877B3021249BD0001C1796 /* PeerConnectionClient.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PeerConnectionClient.m; sourceTree = "<group>"; };
 		C4877B3121249BD0001C1796 /* MessagesHandlerToSignaling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesHandlerToSignaling.m; sourceTree = "<group>"; };
 		C4877B3221249BD0001C1796 /* PeerConnectionClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PeerConnectionClient.h; sourceTree = "<group>"; };
+		C4B3FA072129E87E003630E1 /* LICENCE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENCE.txt; sourceTree = "<group>"; };
+		C4B3FA092129E887003630E1 /* LICENCE.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = LICENCE.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +114,7 @@
 		C42468512125017500A3254F /* dependences */ = {
 			isa = PBXGroup;
 			children = (
+				C4B3FA062129E4D3003630E1 /* LICENCES */,
 				C46FE97621260F0A00E8ED14 /* SocketRocket.framework */,
 				C42468532125018E00A3254F /* WebRTC.framework */,
 			);
@@ -120,10 +124,34 @@
 		C4877B2A21249B27001C1796 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C46FE9742126098400E8ED14 /* libSocketRocket.a */,
 				C4877B2C21249B27001C1796 /* WebRTC.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C4B3FA042129E47C003630E1 /* WebRTC */ = {
+			isa = PBXGroup;
+			children = (
+				C4B3FA092129E887003630E1 /* LICENCE.txt */,
+			);
+			path = WebRTC;
+			sourceTree = "<group>";
+		};
+		C4B3FA052129E48D003630E1 /* SocketRocket */ = {
+			isa = PBXGroup;
+			children = (
+				C4B3FA072129E87E003630E1 /* LICENCE.txt */,
+			);
+			path = SocketRocket;
+			sourceTree = "<group>";
+		};
+		C4B3FA062129E4D3003630E1 /* LICENCES */ = {
+			isa = PBXGroup;
+			children = (
+				C4B3FA052129E48D003630E1 /* SocketRocket */,
+				C4B3FA042129E47C003630E1 /* WebRTC */,
+			);
+			path = LICENCES;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,6 +246,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4B3FA0A2129E887003630E1 /* LICENCE.txt in Resources */,
+				C4B3FA082129E87E003630E1 /* LICENCE.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
