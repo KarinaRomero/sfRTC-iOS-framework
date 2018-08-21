@@ -15,8 +15,10 @@
 @implementation PeerConnectionClient
 
 static NSString *const urlStun = @"stun:stun.l.google.com:19302";
+
 NSDictionary* mandatoryConstraints;
 NSDictionary* optionalConstrains;
+NSDictionary *statusDictionary;
 
 RTCIceServer *iceServer;
 RTCMediaConstraints * rtcConstrains;
@@ -26,7 +28,8 @@ RTCMediaStream *_remoteStream;
 RTCDataChannelConfiguration *dataChannelConfigurations;
 bool _enableDataChannel;
 
--(id)initWhitNameUrlVideoDelegateEnableDataChannel :(NSString*)name :(NSString*)url :(id) videoDelegate :(bool) enableDataChannel{
+
+-(id)initWhitNameUrlVideoDelegateEnableDataChannel :(NSString*)name :(NSString*)url :(id) videoDelegate :(bool) enableDataChannel {
     if ( self = [super init] ) {
         _enableDataChannel = enableDataChannel;
         _remoteDelegate = self;
@@ -34,15 +37,44 @@ bool _enableDataChannel;
         _url = url;
         _videoDelegate = videoDelegate;
         _iceServers = [NSMutableArray array];
+        
+        statusDictionary = [NSDictionary dictionaryWithObjectsAndKeys:
+                            @"ANSWERING", @"ANSWERING",
+                            @"LEAVE", @"LEAVE",
+                            @"DISCONNECTED", @"DISCONNECTED",
+                            @"CALLING", @"CALLING",
+                            @"LOGIN", @"LOGIN",
+                            @"RECEIVING", @"RECEIVING",nil];
+        
         [self createLocalStream];
         return self;
     }
     return nil;
 }
 
+-(void)call:(NSString*)otherName {
+    _otherName = otherName;
+    [self createOffer];
+}
+
+-(void)hangUp {
+    NSDictionary *formatoJson= @{@"type": @"leave", @"name": _otherName};
+    id jsonObject = [NSJSONSerialization dataWithJSONObject:formatoJson options:0 error:nil];
+    // Send leave through the signaling channel of our application
+    [self->_messageHandler sendMessage:jsonObject];
+    // Close Peer Connection
+    [self disconnect];
+}
+
+-(void)answer {
+    [self createAnswer];
+}
+
 - (void)createLocalStream {
     //Initialize Signaling connection
     _messageHandler = [[MessagesHandlerToSignaling alloc] initWhitNameURL:_userName:_url:self];
+    
+    [_videoDelegate didStatusChanged:[statusDictionary objectForKey: @"CONNECTING"]];
     
     // Create PeerConnectionFactory
     _factory =[[RTCPeerConnectionFactory alloc] init];
@@ -90,6 +122,7 @@ bool _enableDataChannel;
     }
     [_peerConnection addStream:_localStream];
 }
+
 -(void)setupDataChannelConnection {
     dataChannelConfigurations = [[RTCDataChannelConfiguration alloc] init];
     dataChannelConfigurations.isNegotiated = NO;
@@ -100,6 +133,7 @@ bool _enableDataChannel;
     _dataChannel = [_peerConnection dataChannelForLabel:@"DataChannel" configuration:dataChannelConfigurations];
     _dataChannel.delegate = self;
 }
+
 - (AVCaptureDevice *)findDeviceForPosition:(AVCaptureDevicePosition)position {
     NSArray<AVCaptureDevice *> *captureDevices = [RTCCameraVideoCapturer captureDevices];
     for (AVCaptureDevice *device in captureDevices) {
@@ -118,24 +152,9 @@ bool _enableDataChannel;
     return maxFramerate;
 }
 
--(void)call:(NSString*)otherName {
-    _otherName = otherName;
-    [self createOffer];
-}
-
--(void)hangUp {
-    NSDictionary *formatoJson= @{@"type": @"leave", @"name": _otherName};
-    id jsonObject = [NSJSONSerialization dataWithJSONObject:formatoJson options:0 error:nil];
-    // Send leave through the signaling channel of our application
-    [self->_messageHandler sendMessage:jsonObject];
-    // Close Peer Connection
-    [self disconnect];
-}
-
 -(void)createOffer {
     [_peerConnection offerForConstraints:rtcConstrains completionHandler:^(RTCSessionDescription * _Nullable sdp, NSError * _Nullable error) {
         __weak RTCPeerConnection *peerConnection = self->_peerConnection;
-        NSLog(@"Llamando a setLocalDescriptionOffer");
         [peerConnection setLocalDescription:sdp completionHandler:^(NSError * _Nullable error) {
             if (peerConnection.signalingState == RTCSignalingStateHaveLocalOffer) {
                 
@@ -143,34 +162,29 @@ bool _enableDataChannel;
                 id jsonObject = [NSJSONSerialization dataWithJSONObject:formatoJson options:0 error:nil];
                 // Send offer through the signaling channel of our application
                 [self->_messageHandler sendMessage:jsonObject];
+                [self->_videoDelegate didStatusChanged:[statusDictionary objectForKey: @ "CALLING"]];
             }
         }];
     }];
 }
 
-#pragma mark--RTCPeerConnectionDelegate
-- (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didAddStream:(nonnull RTCMediaStream *)stream {
-    //Process the stream
-    _remoteStream = stream;
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [self->_videoDelegate didReceiveLocalStream:_localStream];
-        [self->_videoDelegate didReceiveRemoteStream:_remoteStream];
-    });
-    
-    
-}
-
-- (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
-}
-
-- (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeIceGatheringState:(RTCIceGatheringState)newState {
-}
-
-- (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeSignalingState:(RTCSignalingState)stateChanged {
-    
+-(void)createAnswer {
+    [_peerConnection answerForConstraints:rtcConstrains completionHandler:^(RTCSessionDescription * _Nullable sdp, NSError * _Nullable error) {
+        __weak RTCPeerConnection *peerConnection = self->_peerConnection;
+        __weak NSString *weakName = self->_otherName;
+        NSLog(@"Llamando a setLocalDescription onOffer");
+        [peerConnection setLocalDescription:sdp completionHandler:^(NSError * _Nullable error) {
+            NSDictionary *formatoJson= @{@"type": @"answer", @"answer": @{@"type": @"answer", @"sdp": peerConnection.localDescription.sdp}, @"name": weakName};
+            id jsonObject = [NSJSONSerialization dataWithJSONObject:formatoJson options:0 error:nil];
+            // Send response through the signaling channel of our application
+            [self->_messageHandler sendMessage:jsonObject];
+            [self->_videoDelegate didStatusChanged:[statusDictionary objectForKey: @"ANSWERING"]];
+        }];
+    }];
 }
 
 -(BOOL)sendMessageDataChannel:(NSString*) message {
+    
     RTCDataBuffer *buffer = [[RTCDataBuffer alloc] initWithData:[message dataUsingEncoding:NSUTF8StringEncoding] isBinary:NO];
     if(_remoteDataChannel != nil){
         BOOL x = [_remoteDataChannel sendData:buffer];
@@ -181,7 +195,40 @@ bool _enableDataChannel;
     }
 }
 
-- (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didGenerateIceCandidate:(nonnull RTCIceCandidate *)candidate {
+-(void)disconnect {
+    [_dataChannel close];
+    [_peerConnection close];
+    [_messageHandler close];
+    _localStream = nil;
+    _remoteStream = nil;
+    _peerConnection = nil;
+    _dataChannel = nil;
+    _messageHandler = nil;
+    [_videoDelegate didStatusChanged:[statusDictionary objectForKey: @"DISCONNECTED"]];
+}
+
+#pragma mark--RTCPeerConnectionDelegate
+- (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didAddStream:(nonnull RTCMediaStream *)stream {
+    //Process the stream
+    [_videoDelegate didStatusChanged:[statusDictionary objectForKey: @"RECEIVING"]];
+    _remoteStream = stream;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self->_videoDelegate didReceiveLocalStream:_localStream];
+        [self->_videoDelegate didReceiveRemoteStream:_remoteStream];
+    });
+}
+
+- (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeIceConnectionState:(RTCIceConnectionState)newState {
+}
+
+- (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeIceGatheringState:(RTCIceGatheringState)newState {
+}
+
+- (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didChangeSignalingState:(RTCSignalingState)stateChanged {
+}
+
+- (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didGenerateIceCandidate:(nonnull RTCIceCandidate *)candidate
+{
     NSDictionary *formatoJson= @{@"type": @"candidate", @"candidate": @{@"candidate": candidate.sdp, @"sdpMid": candidate.sdpMid, @"sdpMLineIndex": [NSNumber numberWithInt:candidate.sdpMLineIndex]}, @"name": _otherName};
     id jsonObject = [NSJSONSerialization dataWithJSONObject:formatoJson options:0 error:nil];
     [_messageHandler sendMessage:jsonObject];
@@ -193,11 +240,9 @@ bool _enableDataChannel;
 }
 
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didRemoveIceCandidates:(nonnull NSArray<RTCIceCandidate *> *)candidates {
-    
 }
 
 - (void)peerConnection:(nonnull RTCPeerConnection *)peerConnection didRemoveStream:(nonnull RTCMediaStream *)stream {
-   
 }
 
 - (void)peerConnectionShouldNegotiate:(nonnull RTCPeerConnection *)peerConnection {
@@ -218,11 +263,12 @@ bool _enableDataChannel;
 #pragma mark--CSonMessageDelegate
 
 - (void)onLogin:(BOOL *)success {
-    NSLog(@"succes: %@", (success ? @"True" : @"False"));
+    if (success) {
+        [_videoDelegate didStatusChanged:[statusDictionary objectForKey: @"LOGIN"]];
+    }
 }
 
 - (void)onAnswer:(NSString *)answer {
-    //NSLog(@"%@", answer);
     RTCSessionDescription *remoteSdp = [[RTCSessionDescription alloc] initWithType:RTCSdpTypeAnswer sdp:answer];
     __weak RTCPeerConnection *peerConnection = _peerConnection;
     [peerConnection setRemoteDescription:remoteSdp completionHandler:^(NSError * _Nullable error) {
@@ -233,71 +279,30 @@ bool _enableDataChannel;
 }
 
 - (void)onCandidate:(NSString*)sdp midParameter:(NSString*)mid lineiIndexParameter:(int)mLineIndex {
-    //NSLog(@"Candidate: %@ SDPMid: %@ index: %d ",sdp,mid,mLineIndex);
     RTCIceCandidate *rtcCandidate = [[RTCIceCandidate alloc] initWithSdp:sdp sdpMLineIndex:mLineIndex sdpMid:mid];
     [_peerConnection addIceCandidate:rtcCandidate];
 }
 
 - (void)onOffer:(NSString *)offer otherName:(NSString*)otherName {
-    //NSLog(@"%s", __func__);
     _otherName = otherName;
     
     RTCSessionDescription *remoteSdp = [[RTCSessionDescription alloc] initWithType:RTCSdpTypeOffer sdp:offer];
     __weak RTCPeerConnection *peerConnection = _peerConnection;
     
     // Set remote description
-    NSLog(@"Llamando a setRemoteDescription onOffer");
     [peerConnection setRemoteDescription:remoteSdp completionHandler:^(NSError * _Nullable error) {
         if(error!=nil){
             NSLog(@"An error has ocurred: %@",error);
         }else{
-            [self createAnswer];
+            [self->_videoDelegate didReceiveCall:self->_otherName];
         }
     }];
 }
 
--(void)createAnswer {
-    [_peerConnection answerForConstraints:rtcConstrains completionHandler:^(RTCSessionDescription * _Nullable sdp, NSError * _Nullable error) {
-        __weak RTCPeerConnection *peerConnection = self->_peerConnection;
-        __weak NSString *weakName = self->_otherName;
-        NSLog(@"Llamando a setLocalDescription onOffer");
-        [peerConnection setLocalDescription:sdp completionHandler:^(NSError * _Nullable error) {
-            NSDictionary *formatoJson= @{@"type": @"answer", @"answer": @{@"type": @"answer", @"sdp": peerConnection.localDescription.sdp}, @"name": weakName};
-            id jsonObject = [NSJSONSerialization dataWithJSONObject:formatoJson options:0 error:nil];
-            // Send response through the signaling channel of our application
-            [self->_messageHandler sendMessage:jsonObject];
-            
-        }];
-    }];
-}
-
 -(void)onLeave {
+    [_videoDelegate didRemoveRemoteStream:_otherName];
+    [_videoDelegate didStatusChanged:[statusDictionary objectForKey: @"LEAVE"]];
     [self disconnect];
 }
 
--(void)disconnect {
-    [_dataChannel close];
-    [_peerConnection close];
-    [_messageHandler close];
-    _localStream = nil;
-    _remoteStream = nil;
-    _peerConnection = nil;
-    _dataChannel = nil;
-    _messageHandler = nil;
-}
 @end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

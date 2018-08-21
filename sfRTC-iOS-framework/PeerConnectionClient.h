@@ -32,6 +32,10 @@
 - (void)didReceiveLocalStream:(RTCMediaStream *)localVideoTrack;
 - (void)didReceiveRemoteStream:(RTCMediaStream *)remoteVideoTrack;
 - (void)didReceiveData:(NSString*)message;
+- (void)didReceiveCall:(NSString*)callId;
+- (void)didStatusChanged:(NSString*)status;
+- (void)didRemoveRemoteStream:(NSString*)callId;
+
 @end
 
 @interface PeerConnectionClient : NSObject<RTCPeerConnectionDelegate, CSonMessageProtocol, RTCDataChannelDelegate>
@@ -53,4 +57,5 @@
 -(void)call:(NSString*)otherName;
 -(void)hangUp;
 -(BOOL)sendMessageDataChannel:(NSString*) message;
+-(void)answer;
 @end
