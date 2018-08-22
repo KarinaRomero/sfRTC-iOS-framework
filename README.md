@@ -28,7 +28,7 @@ This is a framework to simplify implementation webRTC protocol to iOS apps.
     
 ## Demo 
 
-- Check the [sfRTC-ios-demo](https://github.com/KarinaRomero/sfRTC-ios-demo).
+Check the [sfRTC-ios-demo](https://github.com/KarinaRomero/sfRTC-ios-demo).
 
 ## Usages
 
